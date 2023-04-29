@@ -11,6 +11,9 @@ import { PostService } from 'src/app/services/post.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { UserService } from 'src/app/services/user.service';
 import { BlogDetailDialogComponent } from './blog-detail-dialog/blog-detail-dialog.component';
+import { UserStorageService } from 'src/app/services/user-storage.service';
+import { environment } from 'src/environments/environment';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
     selector: 'app-blog-detail',
@@ -35,19 +38,20 @@ export class BlogDetailComponent implements OnInit {
     endComment: number = 5;
 
     isAdmin: boolean = false;
+    needSubscribe: boolean = false;
 
-    constructor(private _cdr: ChangeDetectorRef, private fb: FormBuilder, private commentService: CommentService, private postService: PostService, private authService: AuthService, private userService: UserService, private spinner: SpinnerService, private activatedRoute: ActivatedRoute, private router: Router, private globalService: GlobalService, private categoryService: CategoryService, private toastr: ToastrService, public dialog: MatDialog) {
+    constructor(private _cdr: ChangeDetectorRef, private fb: FormBuilder, private paymentService: PaymentService, private commentService: CommentService, private postService: PostService, private authService: AuthService, private userStorageService: UserStorageService, private spinner: SpinnerService, private activatedRoute: ActivatedRoute, private router: Router, private globalService: GlobalService, private categoryService: CategoryService, private toastr: ToastrService, public dialog: MatDialog) {
         this.postId = this.activatedRoute.snapshot.params['id'];
-        this.userId = this.userService.getUserId();
-        this.globalService.isAdmin.subscribe(isAdmin => {
-            this.isAdmin = isAdmin;
-            console.log(isAdmin);
-        });
+        // this.userId = this.userStorageService.getUser();
+        // this.globalService.isAdmin.subscribe(isAdmin => {
+        //     this.isAdmin = isAdmin;
+        //     console.log(isAdmin);
+        // });
     }
 
     ngOnInit(): void {
         this.getPost();
-        this.getAllComment();
+        // this.getAllComment();
         this.initForm();
         this.spinner.show();
         setTimeout(() => {
@@ -57,17 +61,31 @@ export class BlogDetailComponent implements OnInit {
 
     getPost() {
         this.postService.getById(this.postId).subscribe((data: any) => {
-            this.postOwnerId = data.data.id;
-            this.post = data.data;
-            this.authService.getById(data.data.userId).subscribe((data: any) => {
-                this.avatar = data.data.avatar;
-            });
-            const body = {
-                "id": data.data.categoryId
+            if (data.data == 'Subscribe to read more') {
+                this.needSubscribe = true;
+            } else {
+                this.postOwnerId = data.data.id;
+                this.post = data.data;
+                this.authService.getById(data.data.user_id).subscribe((data: any) => {
+                    this.avatar = data.data.avatar ? data.data.avatar : '../../../assets/img/default_avatar.png';
+                });
+                // const body = {
+                //     "id": data.data.categoryId
+                // }
+                this.categoryService.getById(data.data.category_id).subscribe((data: any) => {
+                    this.categoryName = data.data.name;
+                });
             }
-            this.categoryService.getById(body).subscribe((data: any) => {
-                this.categoryName = data.data.name;
-            });
+        });
+    }
+
+    subscribe() {
+        this.spinner.show();
+        this.paymentService.payRedirect({
+            amount: environment.SUBSCRIBE_AMOUNT
+        }).subscribe((data: any) => {
+            this.spinner.show();
+            window.location.href = data.data;
         });
     }
 

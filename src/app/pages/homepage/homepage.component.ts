@@ -53,8 +53,8 @@ export class HomepageComponent implements OnInit {
         this.spinner.show();
         this.getAllPost();
         this.getAllCategory();
-        this.getTopPost();
-        this.getAllTag();
+        // this.getTopPost();
+        // this.getAllTag();
         setTimeout(() => {
             /** spinner ends after 5 seconds */
             this.spinner.hide();
@@ -62,14 +62,20 @@ export class HomepageComponent implements OnInit {
     }
 
     getAllPost() {
-        this.postService.getAll().subscribe((data: any) => {
-            this.postList = data.data.filter((post: any) => post.isActive);
+        this.postService.search({
+            userId: null,
+            categoryId: null,
+            startDate: null,
+            endDate: null,
+        }
+        ).subscribe((data: any) => {
+            this.postList = data.data;
         });
     }
 
     getAllCategory() {
         this.categoryService.getAll().subscribe((data: any) => {
-            this.categoryList = data.data.filter((cat: any) => cat.isActive);
+            this.categoryList = data.data;
         });
     }
 

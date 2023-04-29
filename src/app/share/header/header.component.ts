@@ -23,9 +23,9 @@ export class HeaderComponent implements OnInit {
             this.username = user.name;
             this.isAdmin = user.isAdmin ? user.isAdmin : 0;
             this.avatar = user.avatar ? user.avatar : '../../../assets/img/default_avatar.png';
-            this.globalService.setUsername(user.user.name);
-            this.globalService.setAvatar(user.user.avatar ? user.user.avatar : '../../../assets/img/default_avatar.png');
-            this.globalService.setIsAdmin(user.user.isAdmin ? user.user.isAdmin : 0);
+            this.globalService.setUsername(user?.name);
+            this.globalService.setAvatar(user?.avatar ? user?.avatar : '../../../assets/img/default_avatar.png');
+            this.globalService.setIsAdmin(user?.isAdmin ? user?.isAdmin : 0);
         }
     }
 

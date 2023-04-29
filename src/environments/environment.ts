@@ -17,7 +17,8 @@ export const environment = {
         TOKEN_TYPE: 'Bearer ',
         TOKEN_KEY: 'auth-token',
         USER_KEY: 'auth-user',
-    }
+    },
+    SUBSCRIBE_AMOUNT: 200
 };
 
 /*

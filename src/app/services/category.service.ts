@@ -8,14 +8,18 @@ import { environment } from 'src/environments/environment';
 })
 export class CategoryService {
 
-    constructor(private http: HttpClient) { }
+    serviceUrl: string = '';
 
-    getAll(): Observable<any> {
-        return this.http.get(`${environment.BASE_URL}/post_category/get-all`);
+    constructor(private http: HttpClient) {
+        this.serviceUrl = environment.BASE_URL + environment.PATH.CATEGORY_API
     }
 
-    getById(body: any): Observable<any> {
-        return this.http.post(`${environment.BASE_URL}/post_category/get-by-id`, body);
+    getAll(): Observable<any> {
+        return this.http.get(`${this.serviceUrl}`);
+    }
+
+    getById(id: any): Observable<any> {
+        return this.http.get(`${this.serviceUrl}${id}`);
     }
 
     save(body: any): Observable<any> {

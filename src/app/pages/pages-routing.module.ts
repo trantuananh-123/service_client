@@ -11,6 +11,7 @@ import { MyPostComponent } from './my-post/my-post.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotComponent } from './forgot/forgot.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
     {
@@ -61,6 +62,10 @@ const routes: Routes = [
     {
         path: 'profile',
         component: ProfileComponent
+    },
+    {
+        path: 'payment',
+        component: PaymentComponent
     }
 ];
 

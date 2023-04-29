@@ -37,9 +37,13 @@
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
                                                 <label for="title" style="font-weight: bold;">Author's name</label>
-                                                <input formControlName="authorName" type="text" maxlength="1000"
-                                                    class="form-control" name="author"
-                                                    placeholder="Enter author's name">
+                                                <ng-select formControlName="userId" placeholder="Select author"
+                                                    [appendTo]="'body'">
+                                                    <ng-option *ngFor="let author of authorList" [value]="author.id">{{
+                                                        author.name
+                                                        }}
+                                                    </ng-option>
+                                                </ng-select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
@@ -56,17 +60,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <label for="tag" style="font-weight: bold;">Post's tags</label>
-                                                <ng-select #ngSelect formControlName="tags" placeholder="Select tags"
-                                                    [multiple]="true" [maxSelectedItems]="5" [appendTo]="'body'">
-                                                    <ng-option *ngFor="let tag of tagList" [value]="tag.id">{{ tag.name
-                                                        }}
-                                                    </ng-option>
-                                                </ng-select>
-                                            </div>
-                                        </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-6">
@@ -150,14 +143,15 @@
                                 <a [routerLink]="['/blog-detail', p.id]">{{ p.title }} </a>
                             </h4>
                             <ul class="entry-meta">
-                                <li class="post-author-img"><img src="{{ p.image }}" alt=""></li>
-                                <li class="post-author"> <a [routerLink]="['/blog-detail', p.id]">{{ p.authorName }}</a>
+                                <li class="post-author-img"><a [routerLink]="['/blog-detail', p.id]"><img
+                                            src="{{ p.image }}" alt=""></a></li>
+                                <li class="post-author"> <a [routerLink]="['/blog-detail', p.id]">{{ p.user_name }}</a>
                                 </li>
                                 <li class="entry-cat" *ngFor="let cat of categoryList"><a
                                         [routerLink]="['/blog-detail', p.id]" class="category-style-1"
-                                        *ngIf="p.categoryId == cat.id"> <span class="line"></span>{{ cat.name }}</a>
+                                        *ngIf="p.category_id == cat.id"> <span class="line"></span>{{ cat.name }}</a>
                                 </li>
-                                <li class="post-date"> <span class="line"></span> {{ p.createdDate | date:'dd-MM-yyyy'
+                                <li class="post-date"> <span class="line"></span> {{ p.created_at | date:'dd-MM-yyyy'
                                     }}
                                 </li>
                             </ul>

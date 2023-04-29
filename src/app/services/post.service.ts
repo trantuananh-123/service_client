@@ -8,10 +8,22 @@ import { environment } from 'src/environments/environment';
 })
 export class PostService {
 
-    constructor(private http: HttpClient) { }
+    serviceUrl: string = '';
+
+    constructor(private http: HttpClient) {
+        this.serviceUrl = environment.BASE_URL + environment.PATH.POST_API
+    }
 
     getAll(): Observable<any> {
-        return this.http.get(`${environment.BASE_URL}/post/get-all`);
+        return this.http.get(`${this.serviceUrl}`);
+    }
+
+    search(body: any): Observable<any> {
+        return this.http.post(`${this.serviceUrl}search`, body);
+    }
+
+    getById(id: any): Observable<any> {
+        return this.http.get(`${this.serviceUrl}${id}`);
     }
 
     getTop4ByRate(): Observable<any> {
@@ -22,19 +34,11 @@ export class PostService {
         return this.http.post(`${environment.BASE_URL}/post/get-all-by-user-id`, body);
     }
 
-    getById(id: any): Observable<any> {
-        return this.http.get(`${environment.BASE_URL}/post/${id}`);
-    }
-
     save(body: any): Observable<any> {
         return this.http.post(`${environment.BASE_URL}/post/save`, body);
     }
 
     delete(body: any): Observable<any> {
         return this.http.post(`${environment.BASE_URL}/post/delete`, body);
-    }
-
-    search(body: any): Observable<any> {
-        return this.http.post(`${environment.BASE_URL}/post/search`, body);
     }
 }

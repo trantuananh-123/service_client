@@ -68,9 +68,8 @@ export class LoginComponent implements OnInit {
                         }, 1000);
                         this.router.navigate(['/']);
                     }
-                })
+                });
             } else {
-
             this.socialService.facebookLogin('?' + queryParam).subscribe(data => {
                 console.log(data);
                 if (data) {

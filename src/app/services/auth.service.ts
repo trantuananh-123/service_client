@@ -35,15 +35,15 @@ export class AuthService {
     }
 
     getAll(): Observable<any> {
-        return this.http.get(`${environment.BASE_URL}/user/get-all`);
+        return this.http.get(`${this.serviceUrl}get_all`);
+    }
+
+    getById(id: any): Observable<any> {
+        return this.http.get(`${this.serviceUrl}get_by_id/${id}`);
     }
 
     upadte(body: any): Observable<any> {
         return this.http.post(`${environment.BASE_URL}/user/update`, body);
-    }
-
-    getById(id: String): Observable<any> {
-        return this.http.get(`${environment.BASE_URL}/user/${id}`);
     }
 
     checkAdmin(id: String) {
