@@ -1,0 +1,123 @@
+<div *ngIf="data.name === 'Delete' ">
+    <h1 mat-dialog-title style="font-weight: bold">{{ data.name }} {{ data.data.username }}</h1>
+    <mat-dialog-content class="mat-typography">
+        <p style="font-size: 16px;">Are you sure want to delete this user?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-flat-button color="primary" (click)="delete()">Delete</button>
+        <button mat-flat-button color="warn" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</div>
+
+<div *ngIf="data.name === 'Edit'">
+    <h1 mat-dialog-title style="font-weight: bold">{{ data.name }} {{ data.data?.username != null ? data.data?.username
+        : 'new
+        User'
+        }}</h1>
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="userForm" action="#" class="sign-form widget-form mb-3" method="post">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="firstName" style="font-weight: bold;">First Name</label>
+                        <input formControlName="firstName" type="text" maxlength="1000" class="form-control"
+                            name="firstName" placeholder="Enter First Name">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="middleName" style="font-weight: bold;">Middle Name</label>
+                        <input formControlName="middleName" type="text" maxlength="1000" class="form-control"
+                            name="middleName" placeholder="Enter Middle Name">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="lastName" style="font-weight: bold;">Last Name</label>
+                        <input formControlName="lastName" type="text" maxlength="1000" class="form-control"
+                            name="lastName" placeholder="Enter Last Name">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="username" style="font-weight: bold;">Username <span
+                                style="color: red;">*</span></label>
+                        <input formControlName="username" type="text" class="form-control" placeholder="Username*"
+                            name="username" (input)="checkUser($event)"
+                            [ngClass]="{'invalid': (form.username.touched || form.username.dirty || isSubmitted) && form.username.errors}">
+                        <div *ngIf="(form.username.touched || form.username.dirty || isSubmitted)">
+                            <mat-error class="custom__mat-error" *ngIf="form.username.errors?.required">
+                                Username is required</mat-error>
+                            <mat-error class="custom__mat-error" *ngIf="form.username.errors?.unique">
+                                Username is already taken</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="email" style="font-weight: bold;">Email <span style="color: red;">*</span></label>
+                        <input formControlName="email" type="email" class="form-control" placeholder="Email*"
+                            name="email" (input)="checkEmail($event)"
+                            [ngClass]="{'invalid': (form.email.touched || form.email.dirty || isSubmitted) && form.email.errors}">
+                        <div *ngIf="(form.email.touched || form.email.dirty || isSubmitted)">
+                            <mat-error class="custom__mat-error" *ngIf="form.email.errors?.required">
+                                Email is required</mat-error>
+                            <mat-error class="custom__mat-error" *ngIf="form.email.errors?.email">
+                                Invalid email</mat-error>
+                            <mat-error class="custom__mat-error" *ngIf="form.email.errors?.unique">
+                                Email is already taken</mat-error>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="phone" style="font-weight: bold;">Phone</label>
+                        <input formControlName="phone" type="text" maxlength="1000" class="form-control" name="phone"
+                            placeholder="Enter Phone">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label for="birthday" style="font-weight: bold;">Birthday</label>
+                    <mat-form-field appearance="fill" style="display: block;">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="birthday">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="(form.birthday.touched || form.birthday.dirty || isSubmitted)">
+                        <mat-error class="custom__mat-error text-left" *ngIf="userForm.hasError('startDate')">
+                            Birthday must not bigger than Current date</mat-error>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="isActive" style="font-weight: bold;">User's status <span
+                                style="color: red;">*</span></label>
+                        <ng-select formControlName="isActive" [searchable]="true" placeholder="Select user status"
+                            [appendTo]="'body'">
+                            <ng-option *ngFor="let status of statusList" [value]="status.value">{{ status.name
+                                }}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="(form.isActive.touched || form.isActive.dirty || isSubmitted)">
+                            <mat-error class="custom__mat-error text-left" *ngIf="form.isActive.errors?.required">
+                                User status is required</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-flat-button color="primary" (click)="edit()">Save</button>
+        <button mat-flat-button color="warn" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</div>

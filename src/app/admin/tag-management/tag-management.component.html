@@ -1,0 +1,83 @@
+<!--section-heading-->
+<div class="section-heading ">
+    <div class="container-fluid">
+        <div class="section-heading-2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading-2-title">
+                        <h1>Post tag</h1>
+                        <p class="links"><a routerLink="/">Admin <i class="las la-angle-right"></i></a> tag
+                            management</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--contact-->
+<section class="contact">
+    <div class="container-fluid">
+        <div class="contact-area">
+            <div class="row">
+                <div class="col-lg-12 text-right mb-2">
+                    <button (click)="add()" mat-raised-button
+                        style="background-color: #1790C9; color: #ffffff; padding-top: 5px; padding-bottom: 5px; font-size: 16px">Add
+                        new Tag</button>
+                </div>
+                <div class="col-lg-12">
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+
+                        <!-- No. Column -->
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef> No. </th>
+                            <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Name </th>
+                            <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+                        </ng-container>
+
+                        <!-- Created Date Column -->
+                        <ng-container matColumnDef="createdDate">
+                            <th mat-header-cell *matHeaderCellDef> Created Date </th>
+                            <td mat-cell *matCellDef="let element"> {{ element.createdDate | date:'dd/MM/yyyy' }} </td>
+                        </ng-container>
+
+                        <!-- Is Active Column -->
+                        <ng-container matColumnDef="isActive">
+                            <th mat-header-cell *matHeaderCellDef> Is Active </th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-chip-list style="display: flex; justify-content: center">
+                                    <mat-chip style="background-color: #54A254;" selected *ngIf="element.isActive">
+                                        Active
+                                    </mat-chip>
+                                    <mat-chip style="background-color: #BD362F;" selected *ngIf="!element.isActive">
+                                        Disabled
+                                    </mat-chip>
+                                </mat-chip-list>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef> Actions </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-mini-fab color="primary" class="mr-2" (click)="edit(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" (click)="delete(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

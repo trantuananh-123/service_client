@@ -1,0 +1,183 @@
+<!--post-single-->
+<section class="post-single">
+    <div class="container-fluid ">
+        <div class="row ">
+            <div class="col-lg-12">
+                <!--post-single-title-->
+                <div class="post-single-body">
+                    <div class="post-single-title">
+                        <h2 style="font-size: 32px; font-weight: bold"> {{ post?.title }} </h2>
+                        <div class="meta-social">
+                            <ul class="entry-meta">
+                                <li class="post-author-img"><img src="{{ avatar }}" alt=""></li>
+                                <li class="post-author"> <a href="author.html">{{ post?.authorName }}</a></li>
+                                <li class="entry-cat"> <a href="blog-layout-1.html" class="category-style-1"> <span
+                                            class="line"></span> {{ categoryName }}</a></li>
+                                <li class="post-date"> <span class="line"></span> {{ post?.createdDate |
+                                    date:'dd/MM/yyyy' }}</li>
+                            </ul>
+                            <div class="social-media" *ngIf="post?.userId === userId || isAdmin">
+                                <ul class="list-inline">
+                                    <li>
+                                        <button (click)="edit()" mat-raised-button color="primary" class="mr-2"
+                                            style="color: #ffffff; padding-top: 5px; padding-bottom: 5px; font-size: 16px">Edit
+                                            Post</button>
+                                    </li>
+                                    <li>
+                                        <button (click)="delete()" mat-raised-button color="warn"
+                                            style="color: #ffffff; padding-top: 5px; padding-bottom: 5px; font-size: 16px">Delete
+                                            Post</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--post-single-image-->
+                <div class="post-single-image">
+                    <img src="{{ post?.image }}" alt="" style="width: 1110px; height: 832.5px">
+                </div>
+
+                <div class="post-single-body">
+                    <!--post-single-content-->
+                    <div class="post-single-content">
+                        <p [innerHtml]="post?.content | htmlPipe"></p>
+                    </div>
+
+                    <!--post-single-bottom-->
+                    <div class="post-single-bottom">
+                        <div class="tags">
+                            <p style="margin: 0 !important; align-self: center">Tags:</p>
+                            <ul class="list-inline">
+                                <li *ngFor="let tag of post?.tags">
+                                    <a href="javascript:void(0)">{{ tag.name }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="social-media">
+                            <p>Share on :</p>
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        <i class="fab fa-pinterest"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!--post-single-comments-->
+                    <div class="post-single-comments">
+                        <!--Comments-->
+                        <h3 style="font-size: 20px; font-weight: bold">{{ commentList?.length == null ? 0 :
+                            commentList.length }} Comments</h3>
+                        <ul class="comments">
+                            <!--comment1-->
+                            <li class="comment-item pt-0" *ngFor="let c of commentList | slice:0:endComment">
+                                <img style=" width: 50px; height: 50px;" src="{{ c.user?.avatar }}" alt="">
+                                <div class="content {{ 'content-' + c.id }}" style="width: 80%">
+                                    <div class="meta">
+                                        <ul class="list-inline">
+                                            <li><a href="javascript:void(0)">{{ c.user?.username }}</a> </li>
+                                            <li class="slash"></li>
+                                            <li *ngIf="c.updatedDate == null">{{ c.createdDate |
+                                                date:'dd/MM/yyyy' }}</li>
+                                            <li *ngIf="c.updatedDate != null">{{ c.updatedDate |
+                                                date:'dd/MM/yyyy' }}</li>
+                                            <li *ngIf="c?.userId == post?.userId"> (Post Owner)</li>
+                                            <li
+                                                style="margin-left: 575px; position: absolute; right: 110px; padding-top: 16px;">
+                                                <mat-icon *ngIf="c?.userId == userId" class="comment-action"
+                                                    style="color: green;" (click)="enableEditComment(c)">edit
+                                                </mat-icon>
+                                                <mat-icon
+                                                    *ngIf="post?.userId == userId || c?.userId == userId || isAdmin"
+                                                    class="comment-action" style="color: red;"
+                                                    (click)="deleteComment(c)">delete
+                                                </mat-icon>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p
+                                        *ngIf="!isEditComment || (isEditComment && !(c?.userId == userId)) || (isEditComment && !(c?.id == commentId))">
+                                        {{ c.content}}</p>
+                                    <form [formGroup]="commentForm" action="#"
+                                        *ngIf="isEditComment && c?.userId == userId && c?.id == commentId">
+                                        <div class="form-group">
+                                            <textarea formControlName="content" name="message" id="message" cols="30"
+                                                rows="5" class="form-control" placeholder="Message*"
+                                                required="required"></textarea>
+                                        </div>
+                                        <button (click)="save(c)" mat-raised-button color="primary" class="mr-2"
+                                            style="color: #ffffff; font-size: 16px">Save</button>
+                                        <button (click)="cancel()" mat-raised-button color="warn"
+                                            style="color: #ffffff; font-size: 16px">Cancel</button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="row" *ngIf="endComment < commentList!.length && commentList!.length != 0">
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" name="submit" class="btn-custom mb-3" (click)="loadMore()">
+                                    Load More
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="endComment >= commentList!.length && commentList!.length != 0">
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" name="submit" class="btn-custom mb-3" (click)="loadLess()">
+                                    Show Less
+                                </button>
+                            </div>
+                        </div>
+                        <!--Leave-comments-->
+                        <div class="comments-form">
+                            <h4>Leave a Reply</h4>
+                            <!--form-->
+                            <form [formGroup]="commentForm" class="form " action="#" method="POST"
+                                id="main_contact_form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <textarea formControlName="content" name="message" id="message" cols="30"
+                                                rows="5" class="form-control" placeholder="Message*"
+                                                required="required"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <button type="submit" name="submit" class="btn-custom" (click)="save()">
+                                            Comment
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!--/-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

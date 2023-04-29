@@ -1,0 +1,77 @@
+<!--Login-->
+<section class="login">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 m-auto">
+                <div class="login-content">
+                    <h4>Sign up</h4>
+                    <!--form-->
+                    <form [formGroup]="signUpForm" class="sign-form widget-form contact_form " method="post">
+                        <div class="form-group">
+                            <input formControlName="username" type="text" class="form-control" placeholder="Username*"
+                                name="username"
+                                [ngClass]="{'invalid': (form.username.touched || form.username.dirty || isSubmitted) && form.username.errors}">
+                            <div *ngIf="(form.username.touched || form.username.dirty || isSubmitted)">
+                                <mat-error class="custom__mat-error" *ngIf="form.username.errors?.required">
+                                    Username is required</mat-error>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input formControlName="email" type="email" class="form-control" placeholder="Email*"
+                                name="email"
+                                [ngClass]="{'invalid': (form.email.touched || form.email.dirty || isSubmitted) && form.email.errors}">
+                            <div *ngIf="(form.email.touched || form.email.dirty || isSubmitted)">
+                                <mat-error class="custom__mat-error" *ngIf="form.email.errors?.required">
+                                    Email is required</mat-error>
+                                <mat-error class="custom__mat-error" *ngIf="form.email.errors?.email">
+                                    Invalid email</mat-error>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input formControlName="password" type="password" class="form-control"
+                                placeholder="Password*" name="password"
+                                [ngClass]="{'invalid': (form.password.touched || form.password.dirty || isSubmitted) && form.password.errors}">
+                            <div *ngIf="(form.password.touched || form.password.dirty || isSubmitted)">
+                                <mat-error class="custom__mat-error" *ngIf="form.password.errors?.required">
+                                    Password is required</mat-error>
+                                <mat-error class="custom__mat-error" *ngIf="form.password.errors?.minlength">
+                                    Password must longer than 8 characters</mat-error>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input formControlName="confirmPassword" type="password" class="form-control"
+                                placeholder="confirmPassword*" name="confirmPassword" (change)="checkConfirmPassword()"
+                                [ngClass]="{'invalid': (form.confirmPassword.touched || form.confirmPassword.dirty || isSubmitted) && form.confirmPassword.errors}">
+                            <div *ngIf="(form.confirmPassword.touched || form.confirmPassword.dirty || isSubmitted)">
+                                <mat-error class="custom__mat-error" *ngIf="form.confirmPassword.errors?.required">
+                                    ConfirmPassword is required</mat-error>
+                                <mat-error class="custom__mat-error" *ngIf="form.confirmPassword.errors?.notMatch">
+                                    ConfirmPassword is not match with Password</mat-error>
+                            </div>
+                        </div>
+
+                        <div class="sign-controls form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rememberMe"
+                                    (change)="agree($event)">
+                                <label class="custom-control-label" for="rememberMe">Agree to our <a
+                                        href="javascript:void(0)" class="btn-link">terms & conditions</a> </label>
+                            </div>
+                        </div>
+                        <div class="form-group" (click)="signUp()">
+                            <button type="submit" class="btn-custom" [disabled]="!isAgreed"
+                                [ngClass]="{'btn-custom-invalid': !isAgreed}">Sign
+                                Up</button>
+                        </div>
+                        <p class="form-group text-center">Already have an account? <a routerLink="/login"
+                                class="btn-link">Login</a> </p>
+                    </form>
+                    <!--/-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

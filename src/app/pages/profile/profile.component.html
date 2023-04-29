@@ -1,0 +1,155 @@
+<!--author-->
+<section class="authors">
+    <div class="container-fluid">
+        <div class="row">
+            <!--author-image-->
+            <div class="col-lg-12 col-md-12 ">
+                <div class="authors-info">
+                    <div class="image">
+                        <a href="author.html" class="image">
+                            <img style="width: 100px" src="{{ user?.avatar }}" alt="">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <h4>{{ user?.username }}</h4>
+                        <label for="image" style="font-weight: bold;">Update avatar <span
+                                style="color: red;">*</span></label>
+                        <input #fileInput style="display: block;" type="file" name="image"
+                            (change)="selectFile($event)">
+                        <button mat-flat-button color="primary" (click)="upload()" class="mt-2">Upload</button>
+                    </div>
+                </div>
+                <!--/-->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- blog-author-->
+<section class="blog-author mt-30">
+    <div class="container-fluid">
+        <div class="row">
+            <!--content-->
+            <div class="col-lg-12 oredoo-content">
+                <button mat-flat-button color="primary" (click)="changeState()">Update Profile</button>
+                <div class="theiaStickySidebar mt-3">
+                    <form [formGroup]="userForm" action="#" class="sign-form widget-form mb-3" method="post">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="firstName" style="font-weight: bold;">First Name</label>
+                                        <input formControlName="firstName" type="text" maxlength="1000"
+                                            class="form-control" name="firstName" placeholder="Enter First Name">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="middleName" style="font-weight: bold;">Middle Name</label>
+                                        <input formControlName="middleName" type="text" maxlength="1000"
+                                            class="form-control" name="middleName" placeholder="Enter Middle Name">
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="lastName" style="font-weight: bold;">Last Name</label>
+                                        <input formControlName="lastName" type="text" maxlength="1000"
+                                            class="form-control" name="lastName" placeholder="Enter Last Name">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="username" style="font-weight: bold;">Username <span
+                                                style="color: red;">*</span></label>
+                                        <input formControlName="username" type="text" class="form-control"
+                                            placeholder="Username*" name="username"
+                                            [ngClass]="{'invalid': (form.username.touched || form.username.dirty || isSubmitted) && form.username.errors}">
+                                        <div *ngIf="(form.username.touched || form.username.dirty || isSubmitted)">
+                                            <mat-error class="custom__mat-error" *ngIf="form.username.errors?.required">
+                                                Username is required</mat-error>
+                                            <mat-error class="custom__mat-error" *ngIf="form.username.errors?.unique">
+                                                Email is already taken</mat-error>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="email" style="font-weight: bold;">Email <span
+                                                style="color: red;">*</span></label>
+                                        <input formControlName="email" type="email" class="form-control"
+                                            placeholder="Email*" name="email" (change)="checkEmail($event)"
+                                            [ngClass]="{'invalid': (form.email.touched || form.email.dirty || isSubmitted) && form.email.errors}">
+                                        <div *ngIf="(form.email.touched || form.email.dirty || isSubmitted)">
+                                            <mat-error class="custom__mat-error" *ngIf="form.email.errors?.required">
+                                                Email is required</mat-error>
+                                            <mat-error class="custom__mat-error" *ngIf="form.email.errors?.email">
+                                                Invalid email</mat-error>
+                                            <mat-error class="custom__mat-error" *ngIf="form.email.errors?.unique">
+                                                Email is already taken</mat-error>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="phone" style="font-weight: bold;">Phone</label>
+                                        <input formControlName="phone" type="text" maxlength="1000" class="form-control"
+                                            name="phone" placeholder="Enter Phone">
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <label for="birthday" style="font-weight: bold;">Birthday</label>
+                                    <mat-form-field appearance="fill" style="display: block;">
+                                        <mat-label>Choose a date</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="birthday">
+                                        <mat-hint>MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                    <div *ngIf="(form.birthday.touched || form.birthday.dirty || isSubmitted)">
+                                        <mat-error class="custom__mat-error text-left"
+                                            *ngIf="userForm.hasError('startDate')">
+                                            Birthday must not bigger than Current date</mat-error>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-6">
+                                <fieldset [disabled]="state">
+                                    <div class="form-group">
+                                        <label for="password" style="font-weight: bold;">New password</label>
+                                        <input formControlName="password" type="password" maxlength="1000"
+                                            class="form-control" name="password" placeholder="Enter password">
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="!state">
+                            <div class="col-lg-12 text-right">
+                                <button mat-flat-button color="primary" (click)="save()">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--/-->
+            </div>
+        </div>
+    </div>
+</section>

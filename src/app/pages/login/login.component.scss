@@ -1,0 +1,17 @@
+.btn-google {
+    box-shadow: 0 4px 10px 0 rgba(4, 73, 89, 0.06);
+    border-radius: 6px;
+    border: 1px solid #e6ecee;
+    font-size: 14px;
+    color: #6b707f;
+    padding: 8px 27px;
+    display: inline-block;
+    margin-top: 20px;
+}
+.btn-google img {
+    vertical-align: inherit;
+    padding-right: 8px;
+}
+.btn-google:hover {
+    box-shadow: none;
+}

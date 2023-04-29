@@ -1,0 +1,41 @@
+<div *ngIf="!isLoggedIn">
+    <!--Login-->
+    <section class="login">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 m-auto">
+                    <div class="login-content">
+                        <h4>Forgot password</h4>
+                        <p></p>
+                        <form [formGroup]="forgotForm" action="#" class="sign-form widget-form " method="post">
+                            <div class="form-group">
+                                <input formControlName="username" type="text" class="form-control"
+                                    placeholder="Username*" name="username"
+                                    [ngClass]="{'invalid': (form.username.touched || form.username.dirty || isSubmitted) && form.username.errors}">
+                                <div *ngIf="(form.username.touched || form.username.dirty || isSubmitted)">
+                                    <mat-error class="custom__mat-error" *ngIf="form.username.errors?.required">
+                                        Username is required</mat-error>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input formControlName="email" type="email" class="form-control" placeholder="Email*"
+                                    name="email"
+                                    [ngClass]="{'invalid': (form.email.touched || form.email.dirty || isSubmitted) && form.email.errors}">
+                            </div>
+                            <div class="form-group">
+                                <input formControlName="phone" type="text" class="form-control" placeholder="Phone*"
+                                    name="email"
+                                    [ngClass]="{'invalid': (form.phone.touched || form.phone.dirty || isSubmitted) && form.phone.errors}">
+                            </div>
+                            <div class="form-group" (click)="reset()">
+                                <button type="submit" class="btn-custom">Reset password</button>
+                            </div>
+                            <p class="form-group text-center">Already have an account? <a routerLink="/login"
+                                    class="btn-link">Login</a> </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

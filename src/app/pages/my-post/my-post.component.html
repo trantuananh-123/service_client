@@ -1,0 +1,164 @@
+<!--author-->
+<section class="authors">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <h1>MY POST</h1>
+            </div>
+        </div>
+        <div class="row">
+            <!--create-post-->
+            <div class="col-lg-12 col-md-12">
+                <h1 style="margin-top: 10px; font-weight: bold;">Share your stories</h1>
+                <div class="create-post">
+                    <mat-accordion>
+                        <mat-expansion-panel [expanded]="panelOpenState === true" (opened)="setState(true)">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Create a new post
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <form [formGroup]="postForm" action="#" class="sign-form widget-form " method="post">
+                                <div class="form-group">
+                                    <label for="title" style="font-weight: bold;">Post's title <span
+                                            style="color: red;">*</span></label>
+                                    <input formControlName="title" type="text" maxlength="1000" class="form-control"
+                                        name="title" placeholder="Enter post's title"
+                                        [ngClass]="{'invalid': (form.title.touched || form.title.dirty || isSubmitted) && form.title.errors}">
+                                    <div *ngIf="(form.title.touched || form.title.dirty || isSubmitted)">
+                                        <mat-error class="custom__mat-error text-left"
+                                            *ngIf="form.title.errors?.required">
+                                            Title is required</mat-error>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title" style="font-weight: bold;">Post's description <span
+                                            style="color: red;">*</span></label>
+                                    <input formControlName="description" type="text" maxlength="1000"
+                                        class="form-control" name="description" placeholder="Enter post's description"
+                                        [ngClass]="{'invalid': (form.description.touched || form.description.dirty || isSubmitted) && form.description.errors}">
+                                    <div *ngIf="(form.description.touched || form.description.dirty || isSubmitted)">
+                                        <mat-error class="custom__mat-error text-left"
+                                            *ngIf="form.description.errors?.required">
+                                            Description is required</mat-error>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="image" style="font-weight: bold;">Post's cover image <span
+                                            style="color: red;">*</span></label>
+                                    <input #fileInput style="display: block;" type="file" name="image"
+                                        (change)="selectFile($event)">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="category" style="font-weight: bold;">Post's category <span
+                                                    style="color: red;">*</span></label>
+                                            <ng-select formControlName="categoryId" [searchable]="true"
+                                                placeholder="Select category" [appendTo]="'body'">
+                                                <ng-option *ngFor="let cat of categoryList" [value]="cat.id">{{ cat.name
+                                                    }}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div
+                                                *ngIf="(form.categoryId.touched || form.categoryId.dirty || isSubmitted)">
+                                                <mat-error class="custom__mat-error text-left"
+                                                    *ngIf="form.categoryId.errors?.required">
+                                                    Category state is required</mat-error>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="tag" style="font-weight: bold;">Post's tags<span
+                                                    style="color: red;">(Maximum 5 tags)</span></label>
+                                            <ng-select #ngSelect formControlName="tags" placeholder="Select tags"
+                                                [multiple]="true" [maxSelectedItems]="5" addTagText="Other"
+                                                [addTag]="newTag" [appendTo]="'body'">
+                                                <ng-option *ngFor="let tag of tagList" [value]="tag.id">{{ tag.name
+                                                    }}
+                                                </ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content" style="font-weight: bold;">Post's content <span
+                                            style="color: red;">*</span></label>
+                                    <angular-editor formControlName="content" [config]="editorConfig"
+                                        [placeholder]="'Enter text here...'">
+                                    </angular-editor>
+                                    <div *ngIf="(form.content.touched || form.content.dirty || isSubmitted)">
+                                        <mat-error class="custom__mat-error text-left"
+                                            *ngIf="form.content.errors?.required">
+                                            Content is required</mat-error>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3 text-right">
+                                    <button type="submit" class="btn-custom" (click)="post()">Post</button>
+                                </div>
+                            </form>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <!--/-->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- blog-author-->
+<section class="blog-author mt-30">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <h1 style="font-weight: bold;">My post</h1>
+            </div>
+            <!--content-->
+            <div class="col-lg-12 oredoo-content">
+                <div class="theiaStickySidebar">
+                    <!--post1-->
+                    <div *ngFor="let p of postList | paginate: { itemsPerPage: 5, currentPage: page}"
+                        class="post-list post-list-style4 pt-0">
+                        <div class="post-list-image">
+                            <a [routerLink]="['/blog-detail/', p.id]">
+                                <img src="{{ p.image }}" alt="">
+                            </a>
+                        </div>
+                        <div class="post-list-content">
+                            <ul class="entry-meta">
+                                <li class="entry-cat" *ngFor="let cat of categoryList;">
+                                    <a [routerLink]="['/blog-detail/', p.id]" class="category-style-1"
+                                        *ngIf="p.categoryId == cat.id">{{ cat.name }}</a>
+                                </li>
+                                <li class="post-date"> <span class="line"></span> {{ p.createdDate | date:'dd-MM-yyyy'}}
+                                </li>
+                                <li class="ml-2">
+                                    <mat-chip-list style="display: flex; justify-content: center">
+                                        <mat-chip style="background-color: #54A254;" selected *ngIf="p.isActive">
+                                            Active
+                                        </mat-chip>
+                                        <mat-chip style="background-color: #BD362F;" selected *ngIf="!p.isActive">
+                                            Disabled
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </li>
+                            </ul>
+                            <h5 class="entry-title">
+                                <a [routerLink]="['/blog-detail/', p.id]">{{ p.description }}</a>
+                            </h5>
+                            <div class="post-btn">
+                                <a [routerLink]="['/blog-detail/', p.id]" class="btn-read-more">Continue Reading <i
+                                        class="las la-long-arrow-alt-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--pagination-->
+                    <pagination-controls class="text-center" [maxSize]="5" [autoHide]="true" [responsive]="true"
+                        previousLabel="&lsaquo;" nextLabel="&rsaquo;" (pageChange)="page = $event; scrollTop()">
+                    </pagination-controls>
+                </div>
+            </div>
+            <!--/-->
+        </div>
+    </div>
+</section>

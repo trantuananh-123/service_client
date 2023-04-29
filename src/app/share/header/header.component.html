@@ -1,0 +1,88 @@
+<!-- Header -->
+<header class="header navbar-expand-lg fixed-top" style="z-index: 999;">
+    <div class="container-fluid ">
+        <div class="header-area ">
+            <!--logo-->
+            <div class="logo">
+                <a routerLink="/">
+                    <img src="assets/img/logo/logo-dark.png" alt="" class="logo-dark">
+                    <img src="assets/img/logo/logo-white.png" alt="" class="logo-white">
+                </a>
+            </div>
+            <!--/-->
+            <div class="header-navbar">
+                <nav class="navbar" style="margin-left: 30px;">
+                    <!--navbar-collapse-->
+                    <div class="collapse navbar-collapse" id="main_nav">
+                        <ul class="navbar-nav ">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle active" routerLink="/" data-toggle="dropdown">
+                                    home </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link  dropdown-toggle" routerLink="/about-us" data-toggle="dropdown">
+                                    about us </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link  dropdown-toggle" routerLink="/authors" data-toggle="dropdown">
+                                    authors</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link  dropdown-toggle" routerLink="/blog" data-toggle="dropdown"> blogs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" routerLink="/my-post"> my post </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" routerLink="/contact-us"> contact us </a>
+                            </li>
+                            <li class="nav-item dropdown" *ngIf="isAdmin">
+                                <a class="nav-link  dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown">
+                                    Admin </a>
+                                <ul class="dropdown-menu fade-up">
+                                    <li>
+                                        <a class="dropdown-item " routerLink="admin/post-management">post management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item " routerLink="admin/post-cate-management">post category
+                                            management </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" routerLink="admin/user-management">user management </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" routerLink="admin/tag-management">Tag management </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/-->
+                </nav>
+            </div>
+
+            <!--header-right-->
+            <div class="header-right">
+
+                <mat-card [matMenuTriggerFor]="menu" *ngIf="username" class="avatar-card" style="cursor: pointer;">
+                    <mat-card-header>
+                        <div mat-card-avatar class="avatar" [ngStyle]="{'background-image': 'url(' + avatar + ')'}">
+                        </div>
+                    </mat-card-header>
+                </mat-card>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item style="font-weight: bold" routerLink="/profile">Profile</button>
+                    <button mat-menu-item style="font-weight: bold" (click)="logOut()">Log out</button>
+                </mat-menu>
+                <span *ngIf="username" style="margin-left: 10px; color: #000000; align-self: center;">{{
+                    username }}</span>
+                <a routerLink="/login" *ngIf="!username"
+                    style="font-size: 16px; margin-left: 10px; color: #000000; font-weight: bold">Login</a>
+
+            </div>
+        </div>
+    </div>
+</header>

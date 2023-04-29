@@ -1,0 +1,247 @@
+<!-- blog-slider-->
+<section class="blog blog-home4 d-flex align-items-center justify-content-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <owl-carousel-o [options]="customOptions">
+                    <ng-container>
+                        <ng-template carouselSlide *ngFor="let p of postList">
+                            <div class="blog-item" [ngStyle]="{'background-image': 'url(' + p.image + ')'}">
+                                <div class="blog-banner">
+                                    <div class="post-overly">
+                                        <div class="post-overly-content">
+                                            <div class="entry-cat" *ngFor="let cat of categoryList">
+                                                <a [routerLink]="['/blog-detail', p.id]" class="category-style-2"
+                                                    *ngIf="p.categoryId == cat.id">{{ cat.name }}</a>
+                                            </div>
+                                            <h2 class="entry-title">
+                                                <a [routerLink]="['/blog-detail', p.id]">{{ p.description }}</a>
+                                            </h2>
+                                            <ul class="entry-meta">
+                                                <li class="post-author"> <a [routerLink]="['/blog-detail', p.id]">{{
+                                                        p.authorName }}</a>
+                                                </li>
+                                                <li class="post-date"> <span class="line"></span> {{ p.createdDate |
+                                                    date:'dd-MM-yyyy' }}</li>
+                                                <li class="post-timeread"> <span class="line"></span> {{
+                                                    (p.content.length / 5) < 1 ? 'Under 5 minutes' : (p.content.length /
+                                                        5) + ' Mins Read' }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- top categories-->
+<div class="categories">
+    <div class="container-fluid">
+        <div class="categories-area">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="categories-items">
+                        <a class="category-item" href="javascript:void(0)"
+                            *ngFor="let cat of categoryList; let i = index">
+                            <div class="image">
+                                <img src="{{ cat.image }}" alt="">
+                            </div>
+                            <p> {{ cat.name }} <span>{{ i + 1 }}</span> </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--ads-->
+<div class="ads ">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="image">
+                    <img src="assets/img/ads/ads.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Recent articles-->
+<section class=" section-feature-1">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 oredoo-content">
+                <div class="theiaStickySidebar">
+                    <div class="section-title">
+                        <h3>recent Articles </h3>
+                        <p>Discover the most outstanding articles in all topics of life.</p>
+                    </div>
+
+                    <div class="post-list post-list-style4" style="margin-bottom: 50px;"
+                        *ngFor="let p of postList | paginate: { itemsPerPage: 5, currentPage: page}">
+                        <div class="post-list-image">
+                            <a [routerLink]="['/blog-detail', p.id]">
+                                <img style="width: 350px;" src="{{ p.image }}" alt="">
+                            </a>
+                        </div>
+                        <div class="post-list-content">
+                            <ul class="entry-meta">
+                                <li class="entry-cat" *ngFor="let cat of categoryList">
+                                    <a [routerLink]="['/blog-detail', p.id]" class="category-style-1"
+                                        *ngIf="p.categoryId == cat.id">{{ cat.name }}</a>
+                                </li>
+                                <li class="post-date"> <span class="line"></span> {{ p.createdDate | date:'dd-MM-yyyy'}}
+                                </li>
+                            </ul>
+                            <h5 class="entry-title">
+                                <a [routerLink]="['/blog-detail', p.id]">{{ p.description }}</a>
+                            </h5>
+
+                            <div class="post-btn">
+                                <a [routerLink]="['/blog-detail', p.id]" class="btn-read-more">Continue Reading <i
+                                        class="las la-long-arrow-alt-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--pagination-->
+                    <pagination-controls class="text-center" [maxSize]="5" [autoHide]="true" [responsive]="true"
+                        previousLabel="&lsaquo;" nextLabel="&rsaquo;" (pageChange)="page = $event; scrollTop()">
+                    </pagination-controls>
+                </div>
+            </div>
+
+            <!--Sidebar-->
+            <div class="col-lg-4 oredoo-sidebar">
+                <div class="theiaStickySidebar">
+                    <div class="sidebar">
+                        <!--search-->
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h5>Search</h5>
+                            </div>
+                            <div class=" widget-search">
+                                <form action="https://assiagroupe.site/html/Oredoo/search.html">
+                                    <input type="search" id="gsearch" name="gsearch" placeholder="Search ....">
+                                    <a href="search.html" class="btn-submit"><i class="las la-search"></i></a>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!--popular-posts-->
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h5>popular Posts</h5>
+                            </div>
+
+                            <ul class="widget-popular-posts">
+                                <!--post1-->
+                                <li class="small-post" *ngFor="let p of topPostList; let i = index">
+                                    <div class="small-post-image">
+                                        <a [routerLink]="['/blog-detail', p.id]">
+                                            <img src="{{ p.image }}" alt="">
+                                            <small class="nb">{{ i + 1 }}</small>
+                                        </a>
+                                    </div>
+                                    <div class="small-post-content">
+                                        <p>
+                                            <a [routerLink]="['/blog-detail', p.id]">{{ p.description | truncate }}</a>
+                                        </p>
+                                        <small> <span class="slash"></span>{{ p.createdDate | date:'dd-MM-yyyy'
+                                            }}</small>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!--newslatter-->
+                        <div class="widget widget-newsletter">
+                            <h5>Subscribe To Our Newsletter</h5>
+                            <p>No spam, notifications only about new products, updates.</p>
+                            <form action="#" class="newslettre-form">
+                                <div class="form-flex">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Your Email Adress"
+                                            required="required">
+                                    </div>
+                                    <button class="btn-custom" type="submit">Subscribe now</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--stay connected-->
+                        <div class="widget ">
+                            <div class="widget-title">
+                                <h5>Stay connected</h5>
+                            </div>
+
+                            <div class="widget-stay-connected">
+                                <div class="list">
+                                    <div class="item color-facebook">
+                                        <a href="javascript:void(0)"><i class="fab fa-facebook"></i></a>
+                                        <p>Facebook 12k</p>
+                                    </div>
+
+                                    <div class="item color-instagram">
+                                        <a href="javascript:void(0)"><i class="fab fa-instagram"></i></a>
+                                        <p>instagram 102k</p>
+                                    </div>
+
+                                    <div class="item color-twitter">
+                                        <a href="javascript:void(0)"><i class="fab fa-twitter"></i></a>
+                                        <p>twitter 22k</p>
+                                    </div>
+
+                                    <div class="item color-youtube">
+                                        <a href="javascript:void(0)"><i class="fab fa-youtube"></i></a>
+                                        <p>Youtube 120k</p>
+                                    </div>
+
+                                    <div class="item color-dribbble">
+                                        <a href="javascript:void(0)"><i class="fab fa-dribbble"></i></a>
+                                        <p>dribbble 17k</p>
+                                    </div>
+
+                                    <div class="item color-pinterest">
+                                        <a href="javascript:void(0)"><i class="fab fa-pinterest"></i></a>
+                                        <p>pinterest 10k</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--Tags-->
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h5>Tags</h5>
+                            </div>
+                            <div class="widget-tags">
+                                <ul class="list-inline">
+                                    <li *ngFor="let t of tagList">
+                                        <a href="javascript:void(0)">{{ t.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!--Ads-->
+                        <div class="widget pb-0">
+                            <div class="widget-ads">
+                                <img src="assets/img/ads/ads2.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/-->
+        </div>
+    </div>
+</section>

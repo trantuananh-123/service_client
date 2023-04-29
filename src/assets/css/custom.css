@@ -1,0 +1,32 @@
+.form-control:hover,
+.angular-editor-wrapper:hover {
+    border-color: #80bdff;
+    box-shadow  : 0 0 0 0.2rem rgb(0 123 255 / 25%);
+    transition  : border-color .35s ease, box-shadow .35s ease;
+}
+
+.invalid {
+    border: 1px solid #ff5860 !important;
+}
+
+.custom__mat-error {
+    display   : block;
+    text-align: center;
+    margin-top: 5px;
+    color     : #ff5860;
+}
+
+.avatar {
+    background-size: cover;
+}
+
+.ng-select .ng-select-container:hover {
+    border-color: #80bdff;
+    box-shadow  : 0 0 0 0.2rem rgb(0 123 255 / 25%) !important;
+    transition  : border-color .35s ease, box-shadow .35s ease;
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    border-color: none !important;
+    box-shadow  : none !important;
+}

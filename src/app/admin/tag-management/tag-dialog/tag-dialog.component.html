@@ -1,0 +1,76 @@
+<div *ngIf="data.name === 'Edit' || data.name === 'Add'">
+    <h1 mat-dialog-title style="font-weight: bold">{{ data.name }} {{ data.data?.name != null ? data.data?.name : 'new
+        Category'
+        }}</h1>
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="tagForm" action="#" class="sign-form widget-form" method="post">
+            <div class="form-group">
+                <label for="name" style="font-weight: bold;">Tag name <span style="color: red;">*</span></label>
+                <input formControlName="name" type="text" maxlength="1000" class="form-control" name="name"
+                    placeholder="Enter post's category name"
+                    [ngClass]="{'invalid': (form.name.touched || form.name.dirty || isSubmitted) && form.name.errors}">
+                <div *ngIf="(form.name.touched || form.name.dirty || isSubmitted)">
+                    <mat-error class="custom__mat-error text-left" *ngIf="form.name.errors?.required">
+                        Name is required</mat-error>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="image" style="font-weight: bold;">Tag image <span style="color: red;">*</span></label>
+                <input #fileInput style="display: block; margin-bottom: 5px;" type="file" name="image"
+                    (change)="selectFile($event)">
+                <img src="{{data.name === 'Edit' ? data.data.image : ''}}" alt="">
+            </div>
+            <div class="form-group" *ngIf="data.name === 'Edit'">
+                <label for="createdDate" style="font-weight: bold;">Tag created date <span
+                        style="color: red;">*</span></label>
+                <input formControlName="createdDate" type="text" maxlength="1000" class="form-control"
+                    name="createdDate">
+            </div>
+            <div class="form-group" *ngIf="data.name === 'Add'">
+                <label for="createdDate" style="font-weight: bold;">Tag created date <span
+                        style="color: red;">*</span></label>
+                <mat-form-field appearance="fill" style="display: block;">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="createdDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker1">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="(form.createdDate.touched || form.createdDate.dirty || isSubmitted)">
+                    <mat-error class="custom__mat-error text-left" *ngIf="tagForm.hasError('startDate')">
+                        Create date must smaller than Current date</mat-error>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="isActive" style="font-weight: bold;">Post's category status <span
+                        style="color: red;">*</span></label>
+                <ng-select formControlName="isActive" [searchable]="true" placeholder="Select category state"
+                    [appendTo]="'body'">
+                    <ng-option *ngFor="let state of stateList" [value]="state.value">{{ state.name
+                        }}
+                    </ng-option>
+                </ng-select>
+                <div *ngIf="(form.isActive.touched || form.isActive.dirty || isSubmitted)">
+                    <mat-error class="custom__mat-error text-left" *ngIf="form.isActive.errors?.required">
+                        Tag status is required</mat-error>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-flat-button color="primary" (click)="save()">Save</button>
+        <button mat-flat-button color="warn" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</div>
+
+<div *ngIf="data.name === 'Delete' ">
+    <h1 mat-dialog-title style="font-weight: bold">{{ data.name }} {{ data.data.name }}</h1>
+    <mat-dialog-content class="mat-typography">
+        <p style="font-size: 16px;">Are you sure want to delete this tag?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-flat-button color="primary" (click)="delete()">Delete</button>
+        <button mat-flat-button color="warn" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</div>

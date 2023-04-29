@@ -1,0 +1,56 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+html,
+body {
+    height         : 100%;
+    scroll-behavior: smooth !important;
+}
+
+body {
+    margin     : 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+::ng-deep .ngx-pagination li {
+    width       : 50px !important;
+    height      : 50px !important;
+    line-height : 50px !important;
+    margin-right: 20px !important;
+    font-weight : bold;
+}
+
+::ng-deep .ngx-pagination .current {
+    padding    : 0 !important;
+    background : #000000 !important;
+    color      : #ffffff !important;
+    font-weight: bold;
+}
+
+::ng-deep .ngx-pagination .pagination-previous a::before,
+.ngx-pagination .pagination-previous.disabled::before {
+    display: none !important;
+}
+
+:host ::ng-deep {
+
+    .pagination-previous,
+    .pagination-next {
+        margin-right: 30px !important;
+        font-weight : bold;
+    }
+
+    .pagination-previous::before,
+    .pagination-next::before {
+        display: none !important;
+    }
+
+    .ngx-pagination .pagination-next a::after {
+        display: none !important;
+    }
+
+    .ngx-pagination .pagination-next.disabled::after {
+        display: none !important;
+    }
+
+}
