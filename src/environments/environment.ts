@@ -10,6 +10,7 @@ export const environment = {
         SOCIAL_API: 'social/',
         CATEGORY_API: 'categories/',
         POST_API: 'posts/',
+        COMMENT_API: 'comments/',
         PAYMENT_API: 'payment/',
     },
     STORAGE: {

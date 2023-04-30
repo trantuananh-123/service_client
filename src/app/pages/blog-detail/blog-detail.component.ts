@@ -14,13 +14,36 @@ import { BlogDetailDialogComponent } from './blog-detail-dialog/blog-detail-dial
 import { UserStorageService } from 'src/app/services/user-storage.service';
 import { environment } from 'src/environments/environment';
 import { PaymentService } from 'src/app/services/payment.service';
-
+import { InlineShareButtonsConfig } from 'sharethis-angular';
+import Pusher from 'pusher-js';
 @Component({
     selector: 'app-blog-detail',
     templateUrl: './blog-detail.component.html',
     styleUrls: ['./blog-detail.component.scss']
 })
 export class BlogDetailComponent implements OnInit {
+
+    shareButtonConfig: InlineShareButtonsConfig = {
+        alignment: "center", // alignment of buttons (left, center, right)
+        color: "social", // set the color of buttons (social, white)
+        enabled: true, // show/hide buttons (true, false)
+        font_size: 16, // font size for the buttons
+        labels: null, // button labels (cta, counts, null)
+        language: "en", // which language to use (see LANGUAGES)
+        networks: [
+            // which networks to include (see SHARING NETWORKS)
+            "reddit",
+            "skype",
+            "telegram",
+        ],
+        padding: 12, // padding within buttons (INTEGER)
+        radius: 4, // the corner radius on each button (INTEGER)
+        show_total: false,
+        size: 40, // the size of each button (INTEGER)
+
+        // OPTIONAL PARAMETERS
+        url: new URL(window.location.href).toString(), // (defaults to current url)
+    };
 
     avatar!: String;
     defaultAvatar: String = '../../../assets/img/default_avatar.png';
@@ -40,23 +63,60 @@ export class BlogDetailComponent implements OnInit {
     isAdmin: boolean = false;
     needSubscribe: boolean = false;
 
-    constructor(private _cdr: ChangeDetectorRef, private fb: FormBuilder, private paymentService: PaymentService, private commentService: CommentService, private postService: PostService, private authService: AuthService, private userStorageService: UserStorageService, private spinner: SpinnerService, private activatedRoute: ActivatedRoute, private router: Router, private globalService: GlobalService, private categoryService: CategoryService, private toastr: ToastrService, public dialog: MatDialog) {
+    constructor(
+        private _cdr: ChangeDetectorRef,
+        private fb: FormBuilder,
+        private paymentService: PaymentService,
+        private commentService: CommentService,
+        private postService: PostService,
+        private authService: AuthService,
+        private userStorageService: UserStorageService,
+        private spinner: SpinnerService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private globalService: GlobalService,
+        private categoryService: CategoryService,
+        private toastr: ToastrService,
+        public dialog: MatDialog) {
         this.postId = this.activatedRoute.snapshot.params['id'];
-        // this.userId = this.userStorageService.getUser();
-        // this.globalService.isAdmin.subscribe(isAdmin => {
-        //     this.isAdmin = isAdmin;
-        //     console.log(isAdmin);
-        // });
+        this.userId = JSON.parse(this.userStorageService.getUser()!).id;
+        this.globalService.isAdmin.subscribe(isAdmin => {
+            this.isAdmin = isAdmin;
+        });
     }
 
     ngOnInit(): void {
         this.getPost();
-        // this.getAllComment();
+        this.getAllComment();
         this.initForm();
         this.spinner.show();
         setTimeout(() => {
             this.spinner.hide();
         }, 1500);
+
+        Pusher.logToConsole = false;
+
+        const pusher = new Pusher('9828c604c6fe5f7d1400', {
+            cluster: 'ap1'
+        });
+
+        const channel = pusher.subscribe('blog');
+        channel.bind('comment_' + this.postId, (data: Array<any>) => {
+            // this.messages.push(data);
+            for (let i = 0; i < data.length; i++) {
+                let commentIndex = this.commentList.findIndex(x => x.id == data[i]?.id);
+                if (commentIndex == -1) {
+                    this.commentList.unshift(data[i]);
+                } else {
+                    if (data[i]?.is_delete == true) {
+                        this.commentList.splice(commentIndex, 1);
+                    } else {
+                        this.commentList[commentIndex] = data[i];
+                    }
+                }
+            }
+            // alert(JSON.stringify(data));
+        });
     }
 
     getPost() {
@@ -65,6 +125,7 @@ export class BlogDetailComponent implements OnInit {
                 this.needSubscribe = true;
             } else {
                 this.postOwnerId = data.data.id;
+                console.log(data.data);
                 this.post = data.data;
                 this.authService.getById(data.data.user_id).subscribe((data: any) => {
                     this.avatar = data.data.avatar ? data.data.avatar : '../../../assets/img/default_avatar.png';
@@ -91,14 +152,12 @@ export class BlogDetailComponent implements OnInit {
 
     getAllComment() {
         this.commentService.getAll(this.postId).subscribe((data: any) => {
-            this.commentList = data.data.sort((a: any, b: any) => {
-                return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
-            });
-            this.commentList.forEach((comment: any) => {
-                this.authService.getById(comment.userId).subscribe((data: any) => {
-                    comment["user"] = data.data;
-                });
-            });
+            this.commentList = data.data;
+            // this.commentList.forEach((comment: any) => {
+            //     this.authService.getById(comment.userId).subscribe((data: any) => {
+            //         comment["user"] = data.data;
+            //     });
+            // });
         });
     }
 
@@ -152,10 +211,10 @@ export class BlogDetailComponent implements OnInit {
     initForm() {
         this.commentForm = this.fb.group({
             id: [null],
-            content: [null, Validators.required],
+            body: [null, Validators.required],
             userId: [this.userId, Validators.required],
             postId: [this.postId, Validators.required],
-            createdDate: [null],
+            // createdDate: [null],
         });
     }
 
@@ -165,7 +224,7 @@ export class BlogDetailComponent implements OnInit {
 
     enableEditComment(comment: any) {
         this.commentForm.patchValue({
-            content: comment.content,
+            body: comment.body,
         })
         this.isEditComment = true;
         this.commentId = comment.id;
@@ -175,25 +234,25 @@ export class BlogDetailComponent implements OnInit {
         if (comment != null) {
             this.commentForm.patchValue({
                 id: comment.id != null ? comment.id : null,
-                createdDate: comment.createdDate,
+                // createdDate: comment.createdDate,
             });
         }
         if (this.commentForm.valid) {
             this.commentService.save(this.commentForm.value).subscribe((data: any) => {
                 this.spinner.show();
-                this.getAllComment();
+                // this.getAllComment();
                 this.isEditComment = false;
                 setTimeout(() => {
                     this.spinner.hide();
                 }, 1000);
                 this.cancel();
-                this.scrollTop(data.data.id);
+                this.scrollTop(data.id);
             });
         } else {
             if (this.form.userId.errors?.required) {
                 this.toastr.warning("Log in to comment", "Warning");
-            } else if (this.form.content.errors?.required) {
-                this.toastr.warning('Comment content is required', 'Warning');
+            } else if (this.form.body.errors?.required) {
+                this.toastr.warning('Comment body is required', 'Warning');
             }
         }
     }
@@ -203,7 +262,7 @@ export class BlogDetailComponent implements OnInit {
         this.commentId = null;
         this.commentForm.patchValue({
             id: null,
-            content: null
+            body: null
         });
     }
 
@@ -224,9 +283,9 @@ export class BlogDetailComponent implements OnInit {
         dialogRef.afterClosed().toPromise().then((result: any) => {
             if (result === true) {
                 this.spinner.show();
-                this.getAllComment();
+                // this.getAllComment();
                 this.cancel();
-                this.scrollTop();
+                // this.scrollTop();Z
                 setTimeout(() => {
                     this.spinner.hide();
                 }, 1000);

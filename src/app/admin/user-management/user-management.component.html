@@ -156,14 +156,14 @@
                     <ng-container matColumnDef="isActive">
                         <th mat-header-cell *matHeaderCellDef> Is Active </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-chip-list style="display: flex; justify-content: center">
-                                <mat-chip style="background-color: #54A254;" selected *ngIf="element.isActive">
+                            <mat-chip-listbox style="display: flex; justify-content: center">
+                                <mat-chip-option style="background-color: #54A254;" selected *ngIf="element.isActive">
                                     Active
-                                </mat-chip>
+                                </mat-chip-option>
                                 <mat-chip style="background-color: #BD362F;" selected *ngIf="!element.isActive">
                                     Disabled
                                 </mat-chip>
-                            </mat-chip-list>
+                            </mat-chip-listbox>
                         </td>
                     </ng-container>
 

@@ -24,10 +24,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SharethisAngularModule } from 'sharethis-angular';
 
 const MATERIAL_MODULE = [MatFormFieldModule, MatCardModule, MatExpansionModule, MatTabsModule, MatProgressSpinnerModule, MatMenuModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatTableModule, MatIconModule, MatButtonModule, MatChipsModule, MatDialogModule];
 const FORM_MODULE = [ReactiveFormsModule, FormsModule];
-const THIRD_MODULE = [AngularEditorModule, NgSelectModule, NgxPaginationModule];
+const THIRD_MODULE = [AngularEditorModule, NgSelectModule, NgxPaginationModule, SharethisAngularModule];
 @NgModule({
     declarations: [
         HeaderComponent,

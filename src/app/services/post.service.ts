@@ -39,6 +39,6 @@ export class PostService {
     }
 
     delete(body: any): Observable<any> {
-        return this.http.post(`${environment.BASE_URL}/post/delete`, body);
+        return this.http.post(`${this.serviceUrl}delete`, body);
     }
 }

@@ -27,8 +27,8 @@ export class BlogDetailDialogComponent implements OnInit {
     selectedFile!: FileList;
 
     categoryList: any = [];
-    tagList: any = [];
-    tadIdList: any = [];
+    // tagList: any = [];
+    // tadIdList: any = [];
 
     stateList = [
         {
@@ -68,13 +68,13 @@ export class BlogDetailDialogComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.data.name === 'Edit') {
-            this.tadIdList = this.data.data.tags.map((tag: any) => tag.id);
+            // this.tadIdList = this.data.data.tags.map((tag: any) => tag.id);
         }
         this.initForm();
         this.postForm.patchValue(this.data.data);
-        this.postForm.patchValue({ tags: this.tadIdList });
+        // this.postForm.patchValue({ tags: this.tadIdList });
         this.getAllCategory();
-        this.getAllTag();
+        // this.getAllTag();
     }
 
     getAllCategory() {
@@ -84,9 +84,9 @@ export class BlogDetailDialogComponent implements OnInit {
     }
 
     getAllTag() {
-        this.tagService.getAll().subscribe((data: any) => {
-            this.tagList = data.data.filter((tag: any) => tag.isActive);
-        });
+        // this.tagService.getAll().subscribe((data: any) => {
+        //     this.tagList = data.data.filter((tag: any) => tag.isActive);
+        // });
     }
 
     initForm() {
@@ -124,11 +124,12 @@ export class BlogDetailDialogComponent implements OnInit {
 
     delete() {
         const body = this.data.data;
-        this.postService.delete(body).subscribe((data: any) => {
-            this.toastr.success('Delete successfully', 'Success');
-            this.dialogRef.close(true);
-            this.router.navigateByUrl('/my-post');
-        })
+        console.log(body);
+        // this.postService.delete(body).subscribe((data: any) => {
+        //     this.toastr.success('Delete successfully', 'Success');
+        //     this.dialogRef.close(true);
+        //     this.router.navigateByUrl('/my-post');
+        // });
     }
 
     setBodyRequest() {

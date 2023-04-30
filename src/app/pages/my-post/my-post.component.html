@@ -132,14 +132,14 @@
                                 <li class="post-date"> <span class="line"></span> {{ p.createdDate | date:'dd-MM-yyyy'}}
                                 </li>
                                 <li class="ml-2">
-                                    <mat-chip-list style="display: flex; justify-content: center">
-                                        <mat-chip style="background-color: #54A254;" selected *ngIf="p.isActive">
+                                    <mat-chip-listbox style="display: flex; justify-content: center">
+                                        <mat-chip-option style="background-color: #54A254;" selected *ngIf="p.isActive">
                                             Active
-                                        </mat-chip>
+                                        </mat-chip-option>
                                         <mat-chip style="background-color: #BD362F;" selected *ngIf="!p.isActive">
                                             Disabled
                                         </mat-chip>
-                                    </mat-chip-list>
+                                    </mat-chip-listbox>
                                 </li>
                             </ul>
                             <h5 class="entry-title">

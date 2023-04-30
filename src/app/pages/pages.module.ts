@@ -19,6 +19,7 @@ import { BlogDetailDialogComponent } from './blog-detail/blog-detail-dialog/blog
 import { ProfileComponent } from './profile/profile.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { PaymentComponent } from './payment/payment.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { PaymentComponent } from './payment/payment.component';
         ProfileComponent,
         ForgotComponent,
         PaymentComponent,
+        ChatComponent,
     ],
     imports: [
         CommonModule,

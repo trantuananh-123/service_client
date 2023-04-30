@@ -12,6 +12,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { PaymentComponent } from './payment/payment.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
     {
@@ -66,7 +67,11 @@ const routes: Routes = [
     {
         path: 'payment',
         component: PaymentComponent
-    }
+    },
+    {
+        path: 'chat',
+        component: ChatComponent
+    },
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { PostService } from 'src/app/services/post.service';
 import { TagService } from 'src/app/services/tag.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { InlineFollowButtonsConfig } from 'sharethis-angular';
 
 @Component({
     selector: 'app-homepage',
@@ -11,6 +12,22 @@ import { SpinnerService } from 'src/app/services/spinner.service';
     styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
+
+
+    followButtonConfig: InlineFollowButtonsConfig = {
+        networks: [
+            // which networks to include (see FOLLOW NETWORKS)
+            'twitter',
+            'facebook',
+            'instagram',
+        ],
+        profiles: {
+            // social profile links for buttons
+            twitter: 'tom18102001',
+            facebook: 'tom18102001',
+            instagram: 'tom18102001',
+        },
+    };
 
     page: number = 1;
 

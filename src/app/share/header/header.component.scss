@@ -1,18 +1,18 @@
 .mat-card-title {
     font-size: 16px !important;
-    color    : #000000 !important;
-    margin   : 0 !important;
+    color: #000000 !important;
+    margin: 0 !important;
 }
 
-.mat-card:not([class*=mat-elevation-z]) {
+.mat-card:not([class*="mat-elevation-z"]) {
     box-shadow: none !important;
 }
 
 .mat-card {
-    padding      : 0 !important;
+    padding: 0 !important;
     border-radius: 0 !important;
-    background   : none !important;
-    color        : #000000 !important;
+    background: none !important;
+    color: #000000 !important;
 }
 
 .mat-card-header {
@@ -21,5 +21,12 @@
 
 .mat-card-avatar {
     height: 32px !important;
-    width : 32px !important;
+    width: 32px !important;
+}
+
+:host ::ng-deep {
+    .mat-mdc-card {
+        box-shadow: none !important;
+        --mdc-elevated-card-container-color: none !important;
+    }
 }
