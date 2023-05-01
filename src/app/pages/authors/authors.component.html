@@ -24,18 +24,16 @@
                     <div class="authors-single">
                         <div class="authors-single-image">
                             <a href="author.html">
-                                <img src="{{ a.user.avatar }}" alt="">
+                                <img src="{{ a.avatar }}" alt="">
                             </a>
                         </div>
                         <div class="authors-single-content ">
                             <div class="left">
-                                <h3> <a href="author.html">{{ a.user.username }}</a></h3>
-                                <p>{{ a.totalPost }} articles</p>
+                                <h3> <a href="author.html">{{ a.name }}</a></h3>
                             </div>
                             <div class="right">
-                                <div class="more-icon">
-                                    <i class="las la-angle-double-right"></i>
-                                </div>
+                                <i [routerLink]="['/chat', a.id]" class="fas fa-comment"
+                                    style="cursor: pointer; font-size: 24px; color: #2d2dff;"></i>
                             </div>
                         </div>
                     </div>

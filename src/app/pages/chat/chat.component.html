@@ -1,19 +1,92 @@
-<div class="container">
-    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
-        <div class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
-            <input class="fs-5 fw-semibold" [(ngModel)]="username" />
-        </div>
-        <div class="list-group list-group-flush border-bottom scrollarea">
-            <div class="list-group-item list-group-item-action py-3 lh-tight" *ngFor="let msg of messages">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">{{msg.username}}</strong>
+<div class="container" style="margin-top: 100px;">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card chat-app">
+                <div id="plist" class="people-list">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="username"
+                            (input)="searchUser($event)">
+                    </div>
+                    <ul class="list-unstyled chat-list mt-2 mb-0">
+                        <li class="clearfix" *ngFor="let chat of tempChatList">
+                            <div [routerLink]="['/chat', chat.id]" class="clearfix p-2"
+                                [ngStyle]="{'background': chat.id == second_user_id ? '#efefef' : 'none' }">
+                                <img src="{{ chat?.avatar ? chat?.avatar : '../../../assets/img/default_avatar.png' }}"
+                                    alt="avatar">
+                                <div class="about">
+                                    <div class="name"
+                                        style="display: table-cell; vertical-align: middle; padding: 14px;">{{ chat.name
+                                        }}</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-10 mb-1 small">{{msg.message}}</div>
+                <div class="chat">
+                    <div class="chat-header clearfix">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                    <img src="{{ otherUser?.avatar ? otherUser?.avatar : '../../../assets/img/default_avatar.png' }}"
+                                        alt="avatar">
+                                </a>
+                                <div class="chat-about">
+                                    <h4 class="m-b-0">{{ otherUser?.name }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history">
+                        <ul class="m-b-0">
+                            <li *ngFor="let chat of chatHistory" class="clearfix">
+                                <div class="message-data"
+                                    [ngClass]="{'text-left': chat.first_user_id != first_user_id, 'text-right': chat.first_user_id == first_user_id}">
+                                    <img *ngIf="chat.first_user_id != first_user_id"
+                                        src="{{ otherUser?.avatar ? otherUser?.avatar : '../../../assets/img/default_avatar.png' }}"
+                                        alt="avatar">
+                                </div>
+                                <div class="message"
+                                    [ngClass]="{'float-left other-message': chat.first_user_id != first_user_id, 'float-right my-message': chat.first_user_id == first_user_id}">
+                                    {{ chat?.message }}</div>
+                            </li>
+                            <!-- <li class="clearfix">
+                                <div class="message-data text-left">
+                                    <span class="message-data-time">10:10 AM, Today</span>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                                </div>
+                                <div class="message other-message float-left"> Hi Aiden, how are you? How is the
+                                    project coming along? </div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="message-data text-right">
+                                    <span class="message-data-time">10:12 AM, Today</span>
+                                </div>
+                                <div class="message my-message float-right">Are we meeting today?</div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="message-data text-right">
+                                    <span class="message-data-time">10:15 AM, Today</span>
+                                </div>
+                                <div class="message my-message float-right">Project has been already finished and I have
+                                    results to
+                                    show you.</div>
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div class="chat-message clearfix">
+                        <div class="input-group mb-0">
+                            <input type="text" class="form-control" placeholder="Enter text here..."
+                                [(ngModel)]="message" (keyup.enter)="onEnter()">
+                            <div class="input-group-prepend" style="cursor: pointer;" (click)="chat()">
+                                <span class="input-group-text"><i class="fa fa-paper-plane mr-2"></i>Send</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <form (submit)="submit()">
-        <input class="form-control" placeholder="Write a message" [value]="message"
-            (change)="change($event)" />
-    </form>
 </div>

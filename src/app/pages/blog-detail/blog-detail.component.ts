@@ -79,7 +79,12 @@ export class BlogDetailComponent implements OnInit {
         private toastr: ToastrService,
         public dialog: MatDialog) {
         this.postId = this.activatedRoute.snapshot.params['id'];
-        this.userId = JSON.parse(this.userStorageService.getUser()!).id;
+        const user = JSON.parse(this.userStorageService.getUser()!);
+        if (user == null || user == undefined) {
+            this.router.navigate(['/login']);
+        } else {
+            this.userId = JSON.parse(this.userStorageService.getUser()!).id;
+        }
         this.globalService.isAdmin.subscribe(isAdmin => {
             this.isAdmin = isAdmin;
         });

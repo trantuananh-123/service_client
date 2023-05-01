@@ -11,6 +11,7 @@ export const environment = {
         CATEGORY_API: 'categories/',
         POST_API: 'posts/',
         COMMENT_API: 'comments/',
+        CHAT_API: 'chat/',
         PAYMENT_API: 'payment/',
     },
     STORAGE: {
